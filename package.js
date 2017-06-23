@@ -12,15 +12,21 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.3');
-  api.use('ecmascript');
-  api.use('react-meteor-data');
-  api.export(['ReactiveData']);
-  api.mainModule('lib/meteor-reactive-data.js');
+  api.use([
+    'meteor-base',
+    'ecmascript',
+    'session',
+    'underscore',
+    'react-meteor-data@0.2.9',
+    'tmeasday:check-npm-versions@0.3.1'
+  ]);
+
+  api.mainModule('lib/main.js', 'client');
 });
 
-Package.onTest(function(api) {
-  api.use('ecmascript');
-  api.use('tinytest');
-  api.use('ferencrocks:meteor-reactive-data');
-  api.mainModule('meteor-reactive-data-tests.js');
-});
+// Package.onTest(function(api) {
+//   api.use('ecmascript');
+//   api.use('tinytest');
+//   api.use('ferencrocks:meteor-reactive-data');
+//   api.mainModule('meteor-reactive-data-tests.js');
+// });

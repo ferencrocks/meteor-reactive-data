@@ -28,13 +28,26 @@ export default class ContextProvider extends Component
     this.props.setInstanceState('currentPage', page);
   }
 
-  sortBy(fieldKey, direction) {
+  sortBy(fieldKey, direction = 'auto') {
+    const nextDirection = direction => {
+      switch (direction) {
+        case 1: return -1;
+        case -1: return null;
+        default: return 1;
+      }
+    };
+
     const fields = this.props.getInstanceState('fields');
-    if (fields && fields[fieldKey]) {
-      this.props.setInstanceState('fields', {...fields, [fieldKey]: {}});
+    if (fields === null) return; // the fields are managed, can't change the sort directions
+
+    const fieldFound = fields.find(item => item.key === fieldKey);
+    if (fieldFound) {
+      if (direction === 'auto') fieldFound.sort = nextDirection(fieldFound.sort);
+      else fieldFound.sort = direction;
+      this.props.setInstanceState('fields', fields.map(field => field.key === fieldKey ? fieldFound : field));
     }
     else {
-      throw new Error(`The fields are managed or the field with key ${fieldKey} can't be found!`);
+      throw new Error(`The field with key ${fieldKey} can't be found!`);
     }
   }
 

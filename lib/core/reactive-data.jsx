@@ -69,5 +69,5 @@ ReactiveData.propTypes = {
   onStateChange: PropTypes.func
 };
 ReactiveData.defaultProps = {
-  defaultFields: []
+  defaultFields: null
 };

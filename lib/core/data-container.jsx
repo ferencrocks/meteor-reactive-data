@@ -11,6 +11,8 @@ export const DataContainer = createContainer(props => {
 
     fields,
     defaultFields,
+    filter,
+    isReactive,
 
     page,
     defaultPage,
@@ -44,6 +46,8 @@ export const DataContainer = createContainer(props => {
 
   // Building the query
   const findOptions = {
+    reactive: !!isReactive,
+
     fields: _fields.reduce((acc, fieldDef) => {
       acc[fieldDef.key] = 1;
       return acc;
@@ -56,8 +60,9 @@ export const DataContainer = createContainer(props => {
   };
 
   // Executing the queries
-  const rowCountCursor = _collection.find({}, findOptions);
-  const cursor = _collection.find({}, {
+  const _filter = filter || {};
+  const rowCountCursor = _collection.find(_filter, findOptions);
+  const cursor = _collection.find(_filter, {
     ...findOptions,
     limit: _rowsPerPage,
     skip: _page * _rowsPerPage
@@ -65,7 +70,7 @@ export const DataContainer = createContainer(props => {
 
   // Returning the props
   return {
-    fields,
+    fields: _fields,
     currentPage: _page,
     rowsPerPage: _rowsPerPage,
     dataCount: rowCountCursor.count(),

@@ -4,23 +4,27 @@ import PropTypes from 'prop-types';
 export const Sortable = (SortableComponent) => {
   class SortableProvider extends Component {
     handleSort(direction) {
-      this.context.sortBy(this.props.key, direction);
+      if (this.props.direction) console.warn(`Field ${this.props.fieldKey} sort direction is managed!`);
+      else this.context.sortBy(this.props.fieldKey, direction);
     }
 
     render() {
-      const { key, direction } = this.props;
+      const { fieldKey, direction, ...otherProps } = this.props;
+      const field = this.context.fields.find(field => field.key === fieldKey);
+
       return (
         <SortableComponent
-          {...this.props}
-          key={this.props.key}
-          direction={this.props.direction}
+          fieldKey={fieldKey}
+          direction={direction || field.sort}
           handleSort={this.handleSort.bind(this)}
+          {...otherProps}
         />
       );
     }
   }
   SortableProvider.propTypes = {
-    key: PropTypes.string
+    fieldKey: PropTypes.string,
+    direction: PropTypes.number,
   };
   SortableProvider.contextTypes = {
     getInstanceState: PropTypes.func,

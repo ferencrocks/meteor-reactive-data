@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export const Sortable = (SortableComponent) => {
+export const SortAware = (WrappedComponent) => {
   class SortableProvider extends Component {
     handleSort(direction) {
       if (this.props.direction) console.warn(`Field ${this.props.fieldKey} sort direction is managed!`);
@@ -13,7 +13,7 @@ export const Sortable = (SortableComponent) => {
       const field = this.context.fields.find(field => field.key === fieldKey);
 
       return (
-        <SortableComponent
+        <WrappedComponent
           fieldKey={fieldKey}
           direction={direction || field.sort}
           handleSort={this.handleSort.bind(this)}
@@ -23,7 +23,7 @@ export const Sortable = (SortableComponent) => {
     }
   }
   SortableProvider.propTypes = {
-    fieldKey: PropTypes.string,
+    fieldKey: PropTypes.string.isRequired,
     direction: PropTypes.number,
   };
   SortableProvider.contextTypes = {

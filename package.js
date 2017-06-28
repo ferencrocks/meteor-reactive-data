@@ -15,18 +15,9 @@ Package.onUse(function(api) {
   api.use([
     'meteor-base',
     'ecmascript',
-    'session',
-    'underscore',
     'react-meteor-data@0.2.9',
     'tmeasday:check-npm-versions@0.3.1'
   ]);
 
   api.mainModule('lib/main.js', 'client');
 });
-
-// Package.onTest(function(api) {
-//   api.use('ecmascript');
-//   api.use('tinytest');
-//   api.use('ferencrocks:meteor-reactive-data');
-//   api.mainModule('meteor-reactive-data-tests.js');
-// });
